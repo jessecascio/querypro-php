@@ -1,0 +1,24 @@
+{
+    "name": "jessecascio/querypro",
+    "description": "Query Pro PHP Library",
+    "keywords": ["querypro"],
+    "homepage": "https://github.com/jessecascio/querypro-php",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Jesse Cascio",
+            "email": "jessecascio@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.7.3",
+        "phake/phake": "v2.1.0"
+    },
+    "autoload": {
+        "psr-4": {"QueryPro\\": "src/QueryPro"}
+    }
+}

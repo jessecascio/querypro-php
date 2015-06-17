@@ -1,0 +1,14 @@
+
+<!-- phpunit \-\-configuration src/phpunit.xml \-\-testsuite querypro -->
+
+<phpunit colors="true" bootstrap="test-autoload.php">
+
+	<testsuites>
+
+		<testsuite name="querypro">
+			<directory>QueryPro</directory>
+		</testsuite>
+
+	</testsuites>
+
+</phpunit>
