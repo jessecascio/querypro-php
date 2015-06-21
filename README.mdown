@@ -1,0 +1,25 @@
+QueryPro PHP SDK
+==================
+
+PHP SDK for [QueryPro](https://github.com/jessecascio/querypro) 
+
+Usage
+-----
+
+Install the latest version with `composer require jessecascio/querypro`
+
+```php
+<?php
+
+use QueryPro;
+
+$socket  = new QueryPro\Socket('127.0.0.1', 4444);
+$handler = new QueryPro\Handler($socket);
+
+// send query data vis UDP
+$handler->send(
+    'storage-table-name', // name of table to store metrics in 
+    ['hash', 'query', 'duration'], // table columns
+    [[md5($query), $query, number_format($duration, 4, '.', '')]] // values
+);
+```
