@@ -1,5 +1,5 @@
 
-<!-- phpunit \-\-configuration src/phpunit.xml \-\-testsuite querypro -->
+<!-- phpunit \-\-configuration src/Test/phpunit.xml \-\-testsuite querypro -->
 
 <phpunit colors="true" bootstrap="test-autoload.php">
 

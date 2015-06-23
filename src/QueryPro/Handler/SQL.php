@@ -2,6 +2,7 @@
 
 namespace QueryPro\Handler;
 
+use QueryPro\Socket;
 use QueryPro\Utility;
 
 /**
@@ -47,11 +48,55 @@ class SQL
 	}
 
 	/**
+	 * @return int
+	 */
+	public function count()
+	{
+		return count($this->batch);
+	}
+
+	/**
+	 * Queue up the requests
+	 * @param string - sql query
+	 * @param float  - microseconds
+	 * @param float  - microseconds
+	 */
+	public function batch($q, $start=null, $end=null)
+	{
+		if (is_null($start) || is_null($end)) {
+			$start = microtime(true);
+			$end   = microtime(true);
+		}
+
+		$count = count($this->batch);
+		$query = new Utility\Query($q);
+
+		// verify is a query
+		if (!$query->isQuery()) {
+			return;
+		}
+
+		$d = (floatval($end) - floatval($start)) * 1000;
+
+		// batch data
+		$this->batch[$count] = [
+			$query->getHash(),
+			$query->getQuery(),		   
+			number_format($d, 4, '.', ''),
+			$query->isInsert() ? 1 : 0, // c
+			$query->isSelect() ? 1 : 0, // r
+			$query->isUpdate() ? 1 : 0, // u 
+			$query->isDelete() ? 1 : 0  // d   
+		];
+	}
+
+	/**
 	 * Send the batch
 	 */
 	public function send()
 	{
-		if (!count($this->batch)) {
+		// @todo Consider Exception handling for table length
+		if (!count($this->batch) || !strlen($this->table)) {
 			return;
 		}
 
@@ -72,33 +117,6 @@ class SQL
 		$this->socket->write($data);
 
 		$this->batch = [];
-	}
-
-	/**
-	 * Queue up the requests
-	 * @param string - sql query
-	 * @param float 
-	 */
-	public function batch($q, $duration)
-	{
-		$count = count($this->batch);
-		$query = new Utility\Query($q);
-
-		// verify is a query
-		if (!$query->isQuery()) {
-			return;
-		}
-
-		// bacth data
-		$this->batch[$count] = [
-			$query->getHash(),
-			$query->getQuery(),		   
-			floatval($duration),
-			$query->isInsert() ? 1 : 0, // c
-			$query->isSelect() ? 1 : 0, // r
-			$query->isUpdate() ? 1 : 0, // u 
-			$query->isDelete() ? 1 : 0  // d   
-		];
 	}
 
 }

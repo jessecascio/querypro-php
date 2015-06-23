@@ -3,7 +3,7 @@
 namespace QueryPro\Utility;
 
 /**
- * QueryPro Handler
+ * Query Object
  *
  * @package QueryPro
  * @author  Jesse Cascio <jessecascio@gmail.com>
@@ -57,7 +57,7 @@ class Query
 	{
 		$q = strtolower(preg_replace("/[^A-Za-z0-9]/", '', $this->query)); 
 
-		if (strlen($q) == 0) {
+		if (strlen($q) == 0) { // update to check actual queries
 			$this->isQuery = false;
 			return;
 		}
@@ -91,6 +91,14 @@ class Query
 	public function getHash()
 	{
 		return crc32($this->query);
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isQuery()
+	{
+		return $this->isQuery;
 	}
 
 	/**

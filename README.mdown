@@ -12,14 +12,21 @@ Install the latest version with `composer require jessecascio/querypro`
 <?php
 
 use QueryPro;
+use QueryPro\Handler;
 
 $socket  = new QueryPro\Socket('127.0.0.1', 4444);
-$handler = new QueryPro\Handler($socket);
+$handler = new Handler\SQL('table-name', $socket);
 
-// send query data via UDP
-$handler->send(
-    'storage-table-name', // name of table to store metrics in 
-    ['hash', 'query', 'duration'], // table columns
-    [[md5($query), $query, number_format($duration, 4, '.', '')]] // values
-);
+// execute queries via any type of database handler class
+$timer = microtime(true);
+$database->execute('SELECT * FROM TABLE');
+$handler->batch("SELECT * FROM TABLE", $timer, microtime(true)); // track duration
+
+$timer = microtime(true);
+$database->execute('SELECT * FROM OTHER');
+$handler->batch("SELECT * FROM OTHER", $timer, microtime(true));
+
+// batch send query data via UDP
+$handler->send();
+
 ```

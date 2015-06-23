@@ -1,6 +1,6 @@
 <?php
 
-namespace QueryPro\Test;
+namespace Test\QueryPro;
 
 use PHPUnit_Framework_TestCase;
 use QueryPro\Socket;
