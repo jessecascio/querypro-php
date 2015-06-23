@@ -82,7 +82,7 @@ class SQL
 		$this->batch[$count] = [
 			$query->getHash(),
 			$query->getQuery(),		   
-			number_format($d, 4, '.', ''),
+			floatval(number_format($d, 4, '.', '')),
 			$query->isInsert() ? 1 : 0, // c
 			$query->isSelect() ? 1 : 0, // r
 			$query->isUpdate() ? 1 : 0, // u 
