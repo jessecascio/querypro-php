@@ -16,7 +16,7 @@ use QueryPro;
 $socket  = new QueryPro\Socket('127.0.0.1', 4444);
 $handler = new QueryPro\Handler($socket);
 
-// send query data vis UDP
+// send query data via UDP
 $handler->send(
     'storage-table-name', // name of table to store metrics in 
     ['hash', 'query', 'duration'], // table columns

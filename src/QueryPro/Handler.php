@@ -8,6 +8,7 @@ namespace QueryPro;
  * @package QueryPro
  * @author  Jesse Cascio <jessecascio@gmail.com>
  * @see     jessesnet.com
+ * @deprecated
  */
 class Handler
 {	
