@@ -21,7 +21,7 @@ class Database
 		// blah blah blah
 		$start  = microtime(true);
 		$result = @mysql_query( $query, $this->dbh );
-		$handler->batch("SELECT * FROM TABLE", $start, microtime(true));
+		$handler->batch($query, $start, microtime(true));
 
 		// batch send query data via UDP
 		$handler->send();
@@ -41,14 +41,15 @@ use QueryPro\Handler;
 $socket  = new QueryPro\Socket('127.0.0.1', 4444);
 $handler = new Handler\SQL('table-name', $socket);
 
-// execute queries via any type of database handler class
+// only want to track this queries in application logic
 $timer = microtime(true);
-$database->execute('SELECT * FROM TABLE');
-$handler->batch("SELECT * FROM TABLE", $timer, microtime(true)); // track duration
+$database->query('SELECT * FROM TABLE');
+$handler->batch('SELECT * FROM TABLE', $timer, microtime(true)); // track duration
 
+// ...
 $timer = microtime(true);
-$database->execute('SELECT * FROM OTHER');
-$handler->batch("SELECT * FROM OTHER", $timer, microtime(true));
+$database->query('SELECT * FROM OTHER');
+$handler->batch('SELECT * FROM OTHER', $timer, microtime(true));
 
 // batch send query data via UDP
 $handler->send();
