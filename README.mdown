@@ -11,20 +11,34 @@ Install the latest version with `composer require jessecascio/querypro`
 Add to self made wrapper class for all queries
 ```php
 <?php
+
+use QueryPro;
+use QueryPro\Handler;
+
 class Database
 {
+	private $upd;
+	
+	public function __construct()
+	{	
+		$socket    = new QueryPro\Socket('127.0.0.1', 4444);
+    	$this->udp = new Handler\SQL('application-name', $socket);
+	}
+
 	/**
 	 * Example updating Database wrapper class
 	 */
 	public function query($query) 
 	{
-		// blah blah blah
+		// other important stuff
+
+		// track query and duration
 		$start  = microtime(true);
 		$result = @mysql_query( $query, $this->dbh );
-		$handler->batch($query, $start, microtime(true));
+		$this->udp->batch($query, $start, microtime(true)); 
 
 		// batch send query data via UDP
-		$handler->send();
+		$this->udp->send();
 
 		// continue on
 	}
@@ -39,9 +53,9 @@ use QueryPro;
 use QueryPro\Handler;
 
 $socket  = new QueryPro\Socket('127.0.0.1', 4444);
-$handler = new Handler\SQL('table-name', $socket);
+$handler = new Handler\SQL('application-name', $socket);
 
-// only want to track this queries in application logic
+// only want to track these queries in application logic
 $timer = microtime(true);
 $database->query('SELECT * FROM TABLE');
 $handler->batch('SELECT * FROM TABLE', $timer, microtime(true)); // track duration
