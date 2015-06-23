@@ -8,6 +8,30 @@ Usage
 
 Install the latest version with `composer require jessecascio/querypro`
 
+Add to self made wrapper class for all queries
+```php
+<?php
+class Database
+{
+	/**
+	 * Example updating Database wrapper class
+	 */
+	public function query($query) 
+	{
+		// blah blah blah
+		$start  = microtime(true);
+		$result = @mysql_query( $query, $this->dbh );
+		$handler->batch("SELECT * FROM TABLE", $start, microtime(true));
+
+		// batch send query data via UDP
+		$handler->send();
+
+		// continue on
+	}
+}
+```
+
+Or Selectively track queries
 ```php
 <?php
 
