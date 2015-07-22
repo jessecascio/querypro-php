@@ -37,6 +37,9 @@ class SQL
 	{
 		$this->table  = preg_replace("/[^A-Za-z0-9\-]/", '', $table);
 		$this->socket = $socket;
+
+		// currently only support one timezone until influx update
+		date_default_timezone_set("America/Los_Angeles");
 	}
 
 	/**
@@ -80,6 +83,7 @@ class SQL
 
 		// batch data
 		$this->batch[$count] = [
+			floatval(strtotime("-7 hours")), // utc offset
 			$query->getHash(),
 			$query->getQuery(),		   
 			floatval(number_format($d, 4, '.', '')),
@@ -103,6 +107,7 @@ class SQL
 		$data = [
 			'name'    => $this->table,
 			'columns' => [
+				'time',
 				'hash',
 				'query',
 				'duration',
